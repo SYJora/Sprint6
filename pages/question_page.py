@@ -2,16 +2,18 @@ import allure
 from selenium.webdriver.common.by import By
 
 from locator.locator_questions_page import QuestionsLocators
-from pages.base_page import GeneralMethods
+from pages.base_page import BasePage
 
 
-class QuestionPage(GeneralMethods):
+class QuestionPage(BasePage):
 
+    @allure.step('Выбор вопроса и нажатие')
     def click_question(self, locator_question):
-        self.driver.find_element(By.ID, locator_question).click()
+        self.select_locxcator_by_id(locator_question)
 
+    @allure.step('Возврат текста ответа ')
     def return_text(self, locator):
-        return self.driver.find_element(By.XPATH, locator).text
+        return self.get_text(locator)
 
     @allure.step('Получаем текст ответа на вопрос')
     def get_answer_text_of_question(self, locator_question):

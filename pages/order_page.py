@@ -5,33 +5,38 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from locator.order_locator_page import OrderPageLocator
-from pages.base_page import GeneralMethods
+from pages.base_page import BasePage
 
 
-class OrderPage(GeneralMethods):
+class OrderPage(BasePage):
 
+    @allure.step('Нажатие на кнопку заказать самокат')
     def click_button_order(self, flag):
         if flag == 's':
-            self.driver.find_element(*OrderPageLocator.BUTTON_ORDER).click()
+            self.press_on_text_by_locator(OrderPageLocator.BUTTON_ORDER)
         else:
-            self.driver.find_element(*OrderPageLocator.BUTTON_COOKES).click()
-            self.driver.find_element(*OrderPageLocator.BUTTON_ORDER_BIG).click()
+            self.press_on_text_by_locator(OrderPageLocator.BUTTON_COOKES)
+            self.press_on_text_by_locator(OrderPageLocator.BUTTON_ORDER_BIG)
 
+    @allure.step('Выбор станций метро')
     def select_metro(self):
-        self.driver.find_element(*OrderPageLocator.METRO).click()
-        self.driver.find_element(*OrderPageLocator.STANTION).click()
+        self.press_on_text_by_locator(OrderPageLocator.METRO)
+        self.press_on_text_by_locator(OrderPageLocator.STANTION)
 
+    @allure.step('Выбор дня доставки')
     def select_deliveri_day(self):
         self.press_on_text_by_locator(OrderPageLocator.DATA)
         self.press_on_text_by_locator(OrderPageLocator.DATA_DELIVERY)
 
+    @allure.step('Выбрать количество дней аренды')
     def select_data_rent(self):
         self.press_on_text_by_locator(OrderPageLocator.RENT_DATA_PLACEHOLDER)
         self.press_on_text_by_locator(OrderPageLocator.RENT_DAY)
 
+    @allure.step('Ожидание окна подтверждаешего аренды')
     def finish_order(self):
-        WebDriverWait(self.driver, 15).until(expected_conditions.visibility_of_all_elements_located(OrderPageLocator.SUCCESSFUL_ORDER))
-        return True
+        self.wait_element_visabiliti_all_element(OrderPageLocator.SUCCESSFUL_ORDER)
+
 
     @allure.step('Заполнение первой страницы для заказа самоката. Заполняем поля Имя,Фамилия,Адрес,Телефон')
     def enter_order_param(self, name, lastname, adres, phone, s):
